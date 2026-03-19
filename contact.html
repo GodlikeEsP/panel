@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Contact — MineVanta Hosting™</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root { --green:#00ff88;--blue:#00aaff;--dark:#050a0e;--dark2:#08131c;--card:#0a1520;--border:rgba(0,255,136,0.12);--text:#c8f0dc;--muted:#4a7a60;--gold:#ffcc00; }
+* { margin:0;padding:0;box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { background:var(--dark);color:var(--text);font-family:'Rajdhani',sans-serif;overflow-x:hidden; }
+.bg-grid { position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(0,255,136,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none; }
+nav { position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(5,10,14,0.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 5%;display:flex;align-items:center;justify-content:space-between;height:70px; }
+.nav-logo { display:flex;align-items:center;gap:10px;text-decoration:none; }
+.nav-logo-icon { width:34px;height:34px;background:linear-gradient(135deg,var(--green),var(--blue));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:17px; }
+.nav-logo-text { font-family:'Orbitron',monospace;font-size:15px;font-weight:900;background:linear-gradient(90deg,var(--green),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:2px; }
+.nav-cta { display:flex;gap:12px; }
+.btn-ghost { padding:8px 18px;border:1px solid var(--border);border-radius:6px;color:var(--green);text-decoration:none;font-size:13px;letter-spacing:1px;transition:all 0.3s; }
+.btn-ghost:hover { background:rgba(0,255,136,0.08); }
+.btn-prim { padding:8px 18px;background:linear-gradient(135deg,var(--green),#00cc6a);border-radius:6px;color:#050a0e;text-decoration:none;font-size:12px;font-weight:700;letter-spacing:1px;font-family:'Orbitron',monospace;transition:all 0.3s; }
+.btn-prim:hover { box-shadow:0 4px 20px rgba(0,255,136,0.4); }
+.hero-mini { padding:130px 5% 70px;text-align:center;position:relative; }
+.hero-mini::before { content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(0,170,255,0.06) 0%,transparent 70%);z-index:0; }
+.hero-mini > * { position:relative;z-index:1; }
+.page-tag { font-size:11px;letter-spacing:4px;color:var(--green);margin-bottom:14px; }
+h1 { font-family:'Orbitron',monospace;font-size:clamp(28px,5vw,52px);font-weight:900;color:#fff;margin-bottom:14px; }
+h1 span { background:linear-gradient(90deg,var(--green),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent; }
+.hero-mini p { color:var(--muted);font-size:16px;max-width:550px;margin:0 auto;line-height:1.7; }
+section { padding:60px 5%;position:relative;z-index:1; }
+.contact-grid { display:grid;grid-template-columns:1fr 1fr;gap:30px;max-width:1000px;margin:0 auto; }
+.contact-card { background:var(--card);border:1px solid var(--border);border-radius:16px;padding:36px;transition:all 0.3s;position:relative;overflow:hidden; }
+.contact-card::before { content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--green),transparent);opacity:0;transition:opacity 0.3s; }
+.contact-card:hover::before { opacity:1; }
+.contact-card:hover { border-color:rgba(0,255,136,0.25);transform:translateY(-4px); }
+.cc-icon { font-size:40px;margin-bottom:18px; }
+.cc-title { font-family:'Orbitron',monospace;font-size:16px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:1px; }
+.cc-desc { color:var(--muted);font-size:14px;line-height:1.7;margin-bottom:20px; }
+.discord-big {
+  display:inline-flex;align-items:center;gap:12px;padding:15px 30px;
+  background:#5865F2;border-radius:10px;color:#fff;text-decoration:none;
+  font-family:'Orbitron',monospace;font-size:13px;font-weight:700;letter-spacing:2px;
+  transition:all 0.3s;box-shadow:0 0 30px rgba(88,101,242,0.3);
+}
+.discord-big:hover { background:#4752c4;transform:translateY(-2px);box-shadow:0 8px 40px rgba(88,101,242,0.5); }
+.ticket-btn {
+  display:inline-flex;align-items:center;gap:10px;padding:15px 30px;
+  background:linear-gradient(135deg,var(--green),var(--blue));border-radius:10px;color:#050a0e;text-decoration:none;
+  font-family:'Orbitron',monospace;font-size:13px;font-weight:700;letter-spacing:2px;transition:all 0.3s;
+}
+.ticket-btn:hover { box-shadow:0 8px 30px rgba(0,255,136,0.4);transform:translateY(-2px); }
+.faq-section { max-width:800px;margin:0 auto; }
+.faq-title { font-family:'Orbitron',monospace;font-size:22px;font-weight:900;color:#fff;text-align:center;margin-bottom:10px; }
+.faq-sub { text-align:center;color:var(--muted);font-size:14px;margin-bottom:40px;letter-spacing:1px; }
+.faq-item { background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:10px;overflow:hidden;transition:border-color 0.3s; }
+.faq-item:hover { border-color:rgba(0,255,136,0.25); }
+.faq-q { padding:18px 22px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:15px;font-weight:600;color:var(--text);letter-spacing:0.5px; }
+.faq-q .arrow { color:var(--green);transition:transform 0.3s;font-size:12px; }
+.faq-a { padding:0 22px 18px;color:var(--muted);font-size:14px;line-height:1.7;display:none; }
+.faq-item.open .faq-a { display:block; }
+.faq-item.open .arrow { transform:rotate(180deg); }
+footer { background:var(--dark2);border-top:1px solid var(--border);padding:30px 5%;text-align:center; }
+footer p { color:var(--muted);font-size:13px;letter-spacing:1px; }
+footer a { color:var(--green);text-decoration:none; }
+@media(max-width:700px) { .contact-grid { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<nav>
+  <a href="index.html" class="nav-logo"><div class="nav-logo-icon">⛏</div><span class="nav-logo-text">MINEVANTA</span></a>
+  <div class="nav-cta"><a href="login.html" class="btn-ghost">Login</a><a href="signup.html" class="btn-prim">Get Started</a></div>
+</nav>
+
+<div class="hero-mini">
+  <div class="page-tag">💬 CONTACT & SUPPORT</div>
+  <h1>WE'RE HERE TO <span>HELP</span></h1>
+  <p>Got a question, issue, or just want to chat? Reach our team through Discord or submit a support ticket. Average response time under 10 minutes.</p>
+</div>
+
+<section>
+  <div class="contact-grid">
+    <div class="contact-card">
+      <div class="cc-icon">🔊</div>
+      <div class="cc-title">DISCORD COMMUNITY</div>
+      <div class="cc-desc">The fastest way to get help. Join our Discord server with 10,000+ members. Live support from our team and experienced community members 24/7.</div>
+      <a href="https://discord.gg/minevanta" target="_blank" class="discord-big">
+        🎮 JOIN DISCORD
+      </a>
+      <p style="color:var(--muted);font-size:12px;letter-spacing:2px;margin-top:14px;">discord.gg/minevanta</p>
+    </div>
+    <div class="contact-card">
+      <div class="cc-icon">🎫</div>
+      <div class="cc-title">SUPPORT TICKETS</div>
+      <div class="cc-desc">For billing inquiries, account issues, or technical problems that need escalation. Our technical team handles tickets with full priority and detailed tracking.</div>
+      <a href="login.html" class="ticket-btn">⚡ OPEN TICKET</a>
+      <p style="color:var(--muted);font-size:12px;letter-spacing:2px;margin-top:14px;">Requires account login</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="faq-section">
+    <div class="faq-title">FREQUENTLY ASKED QUESTIONS</div>
+    <div class="faq-sub">Quick answers to the most common questions</div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">How do I set up my Minecraft server? <span class="arrow">▼</span></div>
+      <div class="faq-a">After signing up, you'll get instant access to your Pterodactyl panel. From there, select your Minecraft version, click Deploy, and your server will be online within 30 seconds. We have full guides in our knowledge base and Discord.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Are the free plans really free forever? <span class="arrow">▼</span></div>
+      <div class="faq-a">Yes! Our free plans have no time limit. Your server stays online as long as you keep it active (we pause servers inactive for 7+ days to free resources, but you can restart anytime). No credit card required.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">What DDoS protection do you offer? <span class="arrow">▼</span></div>
+      <div class="faq-a">All plans include DDoS protection. Free plans get standard layer 3/4 protection. Paid plans include advanced layer 7 application-level mitigation up to 1Tbps capacity, keeping your server online even during large attacks.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Can I install mods and plugins? <span class="arrow">▼</span></div>
+      <div class="faq-a">Absolutely! The Pterodactyl panel supports one-click installation of Paper, Spigot, Forge, Fabric, NeoForge, and more. You can upload custom JARs, install mods, plugins, and resource packs directly from the panel.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">How do I upgrade my plan? <span class="arrow">▼</span></div>
+      <div class="faq-a">Log into your dashboard, click "Billing" in the sidebar, select your desired plan, and complete the payment. Upgrades are instant — your server gets the new resources immediately with no downtime.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">What locations are available? <span class="arrow">▼</span></div>
+      <div class="faq-a">We have data centers in: US-East (New York), US-West (Los Angeles), EU-West (Frankfurt), EU-North (Amsterdam), Asia-Pacific (Singapore), and Australia (Sydney). More locations are being added regularly.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 MineVanta Hosting™ — <a href="index.html">Home</a> · <a href="index.html#plans">Plans</a> · <a href="https://discord.gg/minevanta" target="_blank">Discord</a></p>
+</footer>
+
+<script>
+function toggleFaq(el) {
+  const isOpen = el.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(f => f.classList.remove('open'));
+  if (!isOpen) el.classList.add('open');
+}
+</script>
+</body>
+</html>

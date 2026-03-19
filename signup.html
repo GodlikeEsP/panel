@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sign Up — MineVanta Hosting™</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --green: #00ff88; --green-dim: #00cc6a; --dark: #050a0e;
+    --card: #0a1520; --border: #0d2a1f; --text: #c8f0dc;
+    --muted: #4a7a60; --red: #ff4466; --gold: #ffcc00;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: var(--dark); font-family: 'Rajdhani', sans-serif;
+    min-height: 100vh; display: flex; align-items: center;
+    justify-content: center; overflow-x: hidden; position: relative; padding: 20px 0;
+  }
+  .bg-grid {
+    position: fixed; inset: 0; z-index: 0;
+    background-image: linear-gradient(rgba(0,255,136,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,136,0.04) 1px, transparent 1px);
+    background-size: 40px 40px; animation: gridMove 20s linear infinite;
+  }
+  @keyframes gridMove { from { background-position: 0 0; } to { background-position: 40px 40px; } }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(80px); opacity: 0.15; z-index: 0; }
+  .orb1 { width: 350px; height: 350px; background: #00aaff; top: -80px; right: -80px; }
+  .orb2 { width: 300px; height: 300px; background: var(--green); bottom: -60px; left: -60px; }
+  .container { position: relative; z-index: 1; width: 100%; max-width: 480px; padding: 20px; }
+  .logo-wrap { text-align: center; margin-bottom: 30px; }
+  .logo-wrap a { text-decoration: none; }
+  .logo-icon {
+    width: 52px; height: 52px; margin: 0 auto 10px;
+    background: linear-gradient(135deg, var(--green), #00aaff);
+    border-radius: 12px; display: flex; align-items: center; justify-content: center;
+    font-size: 26px; box-shadow: 0 0 30px rgba(0,255,136,0.4);
+    animation: pulse 3s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100% { box-shadow: 0 0 30px rgba(0,255,136,0.4); } 50% { box-shadow: 0 0 60px rgba(0,255,136,0.7); } }
+  .logo-text { font-family: 'Orbitron', monospace; font-size: 20px; font-weight: 900; background: linear-gradient(90deg, var(--green), #00aaff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 3px; }
+  .logo-sub { color: var(--muted); font-size: 12px; letter-spacing: 4px; margin-top: 4px; }
+  .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+    padding: 40px; box-shadow: 0 0 60px rgba(0,255,136,0.05), inset 0 1px 0 rgba(0,255,136,0.1);
+    position: relative; overflow: hidden;
+  }
+  .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, #00aaff, transparent); }
+  .perks { display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; }
+  .perk {
+    flex: 1; min-width: 90px; padding: 8px 10px;
+    background: rgba(0,255,136,0.05); border: 1px solid rgba(0,255,136,0.12);
+    border-radius: 8px; text-align: center; font-size: 11px; color: var(--green); letter-spacing: 1px;
+  }
+  .perk span { display: block; font-size: 16px; margin-bottom: 3px; }
+  h2 { font-family: 'Orbitron', monospace; font-size: 17px; font-weight: 700; color: #fff; text-align: center; margin-bottom: 6px; letter-spacing: 2px; }
+  .sub { text-align: center; color: var(--muted); font-size: 13px; margin-bottom: 24px; letter-spacing: 1px; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .field { margin-bottom: 18px; }
+  label { display: block; font-size: 11px; letter-spacing: 2px; color: var(--muted); margin-bottom: 7px; text-transform: uppercase; }
+  input {
+    width: 100%; padding: 12px 14px;
+    background: rgba(0,255,136,0.04); border: 1px solid rgba(0,255,136,0.15);
+    border-radius: 8px; color: var(--text);
+    font-family: 'Rajdhani', sans-serif; font-size: 15px;
+    outline: none; transition: all 0.3s;
+  }
+  input:focus { border-color: var(--green); box-shadow: 0 0 20px rgba(0,255,136,0.1); }
+  input::placeholder { color: var(--muted); }
+  .strength-bar { height: 3px; background: rgba(0,255,136,0.1); border-radius: 2px; margin-top: 6px; overflow: hidden; }
+  .strength-fill { height: 100%; width: 0%; transition: all 0.4s; border-radius: 2px; }
+  .strength-label { font-size: 10px; letter-spacing: 1px; margin-top: 4px; }
+  .terms { font-size: 12px; color: var(--muted); text-align: center; margin: 14px 0; letter-spacing: 0.5px; }
+  .terms a { color: var(--green); text-decoration: none; }
+  .btn {
+    width: 100%; padding: 14px;
+    background: linear-gradient(135deg, #00aaff, var(--green));
+    border: none; border-radius: 8px;
+    font-family: 'Orbitron', monospace; font-size: 13px; font-weight: 700;
+    color: #050a0e; cursor: pointer; letter-spacing: 2px; transition: all 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .btn::after { content:''; position:absolute; inset:0; background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent); opacity:0; transition: opacity 0.3s; }
+  .btn:hover::after { opacity: 1; }
+  .btn:hover { transform: translateY(-1px); box-shadow: 0 8px 30px rgba(0,170,255,0.4); }
+  .error-msg { background: rgba(255,68,102,0.1); border: 1px solid rgba(255,68,102,0.3); border-radius: 8px; padding: 10px 14px; color: var(--red); font-size: 13px; margin-bottom: 16px; display: none; }
+  .success-msg { background: rgba(0,255,136,0.08); border: 1px solid rgba(0,255,136,0.25); border-radius: 8px; padding: 10px 14px; color: var(--green); font-size: 13px; margin-bottom: 16px; display: none; }
+  .divider { text-align: center; color: var(--muted); font-size: 12px; margin: 18px 0; letter-spacing: 2px; }
+  .link-btn { display: block; text-align: center; padding: 12px; border: 1px solid rgba(0,255,136,0.2); border-radius: 8px; color: var(--green); text-decoration: none; font-size: 14px; letter-spacing: 1px; transition: all 0.3s; }
+  .link-btn:hover { background: rgba(0,255,136,0.06); border-color: var(--green); }
+  .back-home { display: block; text-align: center; margin-top: 20px; color: var(--muted); font-size: 13px; text-decoration: none; letter-spacing: 1px; transition: color 0.3s; }
+  .back-home:hover { color: var(--green); }
+  @media(max-width:480px) { .row { grid-template-columns: 1fr; } .card { padding: 28px 22px; } }
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="glow-orb orb1"></div>
+<div class="glow-orb orb2"></div>
+
+<div class="container">
+  <div class="logo-wrap">
+    <a href="index.html">
+      <div class="logo-icon">⛏</div>
+      <div class="logo-text">MINEVANTA</div>
+      <div class="logo-sub">HIGH PERFORMANCE HOSTING™</div>
+    </a>
+  </div>
+  <div class="card">
+    <div class="perks">
+      <div class="perk"><span>⚡</span>INSTANT SETUP</div>
+      <div class="perk"><span>🛡</span>DDoS PROTECT</div>
+      <div class="perk"><span>🌍</span>GLOBAL NODES</div>
+      <div class="perk"><span>🎮</span>FREE PANEL</div>
+    </div>
+    <h2>CREATE ACCOUNT</h2>
+    <p class="sub">Join thousands of server owners</p>
+    <div class="error-msg" id="errorMsg"></div>
+    <div class="success-msg" id="successMsg"></div>
+    <div class="row">
+      <div class="field"><label>Username</label><input type="text" id="username" placeholder="CoolMiner123"/></div>
+      <div class="field"><label>Email</label><input type="email" id="email" placeholder="you@example.com"/></div>
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="password" placeholder="Min 6 characters" oninput="checkStrength(this.value)"/>
+      <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+      <div class="strength-label" id="strengthLabel" style="color:var(--muted)"></div>
+    </div>
+    <div class="field"><label>Confirm Password</label><input type="password" id="confirm" placeholder="Repeat password"/></div>
+    <p class="terms">By signing up, you agree to our <a href="#">Terms of Service</a> &amp; <a href="#">Privacy Policy</a></p>
+    <button class="btn" onclick="handleSignup()">LAUNCH YOUR SERVER →</button>
+    <div class="divider">— Already have an account? —</div>
+    <a href="login.html" class="link-btn">Sign In Instead</a>
+  </div>
+  <a href="index.html" class="back-home">← Back to Homepage</a>
+</div>
+
+<script src="auth.js"></script>
+<script>
+  if (getSession()) window.location.href = 'home.html';
+
+  function checkStrength(val) {
+    const fill = document.getElementById('strengthFill');
+    const label = document.getElementById('strengthLabel');
+    let score = 0;
+    if (val.length >= 6) score++;
+    if (val.length >= 10) score++;
+    if (/[A-Z]/.test(val)) score++;
+    if (/[0-9]/.test(val)) score++;
+    if (/[^A-Za-z0-9]/.test(val)) score++;
+    const levels = [
+      { w: '0%', c: 'transparent', t: '' },
+      { w: '25%', c: '#ff4466', t: 'WEAK' },
+      { w: '50%', c: '#ffaa00', t: 'FAIR' },
+      { w: '75%', c: '#00ccff', t: 'GOOD' },
+      { w: '100%', c: '#00ff88', t: 'STRONG' },
+    ];
+    const lv = levels[Math.min(score, 4)];
+    fill.style.width = lv.w; fill.style.background = lv.c;
+    label.textContent = lv.t; label.style.color = lv.c;
+  }
+
+  function handleSignup() {
+    const username = document.getElementById('username').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const confirm = document.getElementById('confirm').value;
+    const err = document.getElementById('errorMsg');
+    const suc = document.getElementById('successMsg');
+    err.style.display = 'none'; suc.style.display = 'none';
+
+    if (!username || !email || !password || !confirm) {
+      err.textContent = 'Please fill in all fields.'; err.style.display = 'block'; return;
+    }
+    if (password !== confirm) {
+      err.textContent = 'Passwords do not match.'; err.style.display = 'block'; return;
+    }
+    const result = signup(username, email, password);
+    if (result.success) {
+      suc.textContent = '✓ Account created! Redirecting…'; suc.style.display = 'block';
+      setTimeout(() => { window.location.href = 'home.html'; }, 1200);
+    } else {
+      err.textContent = result.message; err.style.display = 'block';
+    }
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Enter') handleSignup(); });
+</script>
+</body>
+</html>

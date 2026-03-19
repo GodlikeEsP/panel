@@ -1,0 +1,9 @@
+[
+  {
+    "id": 1,
+    "username": "demo",
+    "email": "demo@minevanta.com",
+    "password": "demo1234",
+    "created": "2025-01-01"
+  }
+]

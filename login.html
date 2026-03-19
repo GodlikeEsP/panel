@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Login — MineVanta Hosting™</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --green: #00ff88;
+    --green-dim: #00cc6a;
+    --dark: #050a0e;
+    --card: #0a1520;
+    --border: #0d2a1f;
+    --text: #c8f0dc;
+    --muted: #4a7a60;
+    --red: #ff4466;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--dark);
+    font-family: 'Rajdhani', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .bg-grid {
+    position: fixed; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(0,255,136,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,255,136,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: gridMove 20s linear infinite;
+  }
+  @keyframes gridMove { from { background-position: 0 0; } to { background-position: 40px 40px; } }
+  .glow-orb {
+    position: fixed; border-radius: 50%; filter: blur(80px); opacity: 0.15; z-index: 0;
+  }
+  .orb1 { width: 400px; height: 400px; background: var(--green); top: -100px; left: -100px; }
+  .orb2 { width: 300px; height: 300px; background: #0055ff; bottom: -80px; right: -80px; }
+  .container {
+    position: relative; z-index: 1;
+    width: 100%; max-width: 440px; padding: 20px;
+  }
+  .logo-wrap {
+    text-align: center; margin-bottom: 36px;
+  }
+  .logo-wrap a { text-decoration: none; }
+  .logo-icon {
+    width: 56px; height: 56px; margin: 0 auto 12px;
+    background: linear-gradient(135deg, var(--green), #00aaff);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; box-shadow: 0 0 30px rgba(0,255,136,0.4);
+    animation: pulse 3s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100% { box-shadow: 0 0 30px rgba(0,255,136,0.4); }
+    50% { box-shadow: 0 0 60px rgba(0,255,136,0.7); }
+  }
+  .logo-text {
+    font-family: 'Orbitron', monospace; font-size: 22px; font-weight: 900;
+    background: linear-gradient(90deg, var(--green), #00aaff);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: 3px;
+  }
+  .logo-sub { color: var(--muted); font-size: 12px; letter-spacing: 4px; margin-top: 4px; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 0 60px rgba(0,255,136,0.05), inset 0 1px 0 rgba(0,255,136,0.1);
+    position: relative; overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--green), transparent);
+  }
+  h2 {
+    font-family: 'Orbitron', monospace; font-size: 18px; font-weight: 700;
+    color: #fff; text-align: center; margin-bottom: 8px; letter-spacing: 2px;
+  }
+  .sub { text-align: center; color: var(--muted); font-size: 14px; margin-bottom: 30px; letter-spacing: 1px; }
+  .field { margin-bottom: 20px; }
+  label { display: block; font-size: 12px; letter-spacing: 2px; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; }
+  input {
+    width: 100%; padding: 13px 16px;
+    background: rgba(0,255,136,0.04);
+    border: 1px solid rgba(0,255,136,0.15);
+    border-radius: 8px; color: var(--text);
+    font-family: 'Rajdhani', sans-serif; font-size: 15px;
+    outline: none; transition: all 0.3s;
+  }
+  input:focus { border-color: var(--green); box-shadow: 0 0 20px rgba(0,255,136,0.1); }
+  input::placeholder { color: var(--muted); }
+  .btn {
+    width: 100%; padding: 14px;
+    background: linear-gradient(135deg, var(--green), #00cc6a);
+    border: none; border-radius: 8px;
+    font-family: 'Orbitron', monospace; font-size: 13px; font-weight: 700;
+    color: #050a0e; cursor: pointer; letter-spacing: 2px;
+    transition: all 0.3s; margin-top: 8px;
+    position: relative; overflow: hidden;
+  }
+  .btn::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .btn:hover::after { opacity: 1; }
+  .btn:hover { transform: translateY(-1px); box-shadow: 0 8px 30px rgba(0,255,136,0.4); }
+  .btn:active { transform: translateY(0); }
+  .error-msg {
+    background: rgba(255,68,102,0.1); border: 1px solid rgba(255,68,102,0.3);
+    border-radius: 8px; padding: 10px 14px;
+    color: var(--red); font-size: 13px; margin-bottom: 16px;
+    display: none; letter-spacing: 0.5px;
+  }
+  .divider { text-align: center; color: var(--muted); font-size: 12px; margin: 20px 0; letter-spacing: 2px; }
+  .link-btn {
+    display: block; text-align: center; padding: 13px;
+    border: 1px solid rgba(0,255,136,0.2); border-radius: 8px;
+    color: var(--green); text-decoration: none;
+    font-family: 'Rajdhani', sans-serif; font-size: 14px; letter-spacing: 1px;
+    transition: all 0.3s;
+  }
+  .link-btn:hover { background: rgba(0,255,136,0.06); border-color: var(--green); }
+  .back-home { display: block; text-align: center; margin-top: 20px; color: var(--muted); font-size: 13px; text-decoration: none; letter-spacing: 1px; transition: color 0.3s; }
+  .back-home:hover { color: var(--green); }
+  .particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+  .particle {
+    position: absolute; width: 2px; height: 2px;
+    background: var(--green); border-radius: 50%;
+    animation: float linear infinite; opacity: 0;
+  }
+  @keyframes float {
+    0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.3; }
+    100% { transform: translateY(-100px) translateX(20px); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="glow-orb orb1"></div>
+<div class="glow-orb orb2"></div>
+<div class="particles" id="particles"></div>
+
+<div class="container">
+  <div class="logo-wrap">
+    <a href="index.html">
+      <div class="logo-icon">⛏</div>
+      <div class="logo-text">MINEVANTA</div>
+      <div class="logo-sub">HIGH PERFORMANCE HOSTING™</div>
+    </a>
+  </div>
+  <div class="card">
+    <h2>WELCOME BACK</h2>
+    <p class="sub">Sign in to your control panel</p>
+    <div class="error-msg" id="errorMsg"></div>
+    <div class="field">
+      <label>Email Address</label>
+      <input type="email" id="email" placeholder="you@example.com" autocomplete="email"/>
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="password" placeholder="••••••••" autocomplete="current-password"/>
+    </div>
+    <button class="btn" onclick="handleLogin()">ACCESS PANEL</button>
+    <div class="divider">— OR —</div>
+    <a href="signup.html" class="link-btn">Create New Account</a>
+  </div>
+  <a href="index.html" class="back-home">← Back to Homepage</a>
+</div>
+
+<script src="auth.js"></script>
+<script>
+  // Particles
+  const pc = document.getElementById('particles');
+  for (let i = 0; i < 20; i++) {
+    const p = document.createElement('div'); p.className = 'particle';
+    p.style.left = Math.random() * 100 + 'vw';
+    p.style.animationDuration = (8 + Math.random() * 12) + 's';
+    p.style.animationDelay = (Math.random() * 10) + 's';
+    p.style.opacity = '0';
+    pc.appendChild(p);
+  }
+
+  // If already logged in
+  const existing = getSession();
+  if (existing) window.location.href = existing.role === 'admin' ? 'admin.html' : 'home.html';
+
+  function handleLogin() {
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const err = document.getElementById('errorMsg');
+    err.style.display = 'none';
+    if (!email || !password) {
+      err.textContent = 'Please fill in all fields.'; err.style.display = 'block'; return;
+    }
+    const result = login(email, password);
+    if (result.success) {
+      window.location.href = result.role === 'admin' ? 'admin.html' : 'home.html';
+    } else {
+      err.textContent = result.message; err.style.display = 'block';
+    }
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Enter') handleLogin(); });
+</script>
+</body>
+</html>
