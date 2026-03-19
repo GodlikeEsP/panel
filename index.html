@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MineVanta Hosting™ | High Performance Minecraft Hosting</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--green:#00ff88;--green-dim:#00cc6a;--blue:#00aaff;--dark:#050a0e;--dark2:#08131c;--card:#0a1520;--border:rgba(0,255,136,0.12);--text:#c8f0dc;--muted:#4a7a60;--gold:#ffcc00;--red:#ff4466;--purple:#aa44ff;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--dark);color:var(--text);font-family:'Rajdhani',sans-serif;overflow-x:hidden;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(5,10,14,0.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 5%;display:flex;align-items:center;justify-content:space-between;height:70px;}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.nav-logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--green),var(--blue));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 0 20px rgba(0,255,136,0.4);}
+.nav-logo-text{font-family:'Orbitron',monospace;font-size:16px;font-weight:900;background:linear-gradient(90deg,var(--green),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:2px;}
+.nav-links{display:flex;align-items:center;gap:32px;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:14px;letter-spacing:1px;transition:color 0.3s;}
+.nav-links a:hover{color:var(--green);}
+.nav-cta{display:flex;gap:12px;}
+.btn-ghost{padding:8px 20px;border:1px solid var(--border);border-radius:6px;color:var(--green);text-decoration:none;font-size:13px;letter-spacing:1px;transition:all 0.3s;}
+.btn-ghost:hover{background:rgba(0,255,136,0.08);border-color:var(--green);}
+.btn-primary{padding:8px 20px;background:linear-gradient(135deg,var(--green),var(--green-dim));border-radius:6px;color:#050a0e;text-decoration:none;font-size:12px;font-weight:700;letter-spacing:1px;transition:all 0.3s;font-family:'Orbitron',monospace;}
+.btn-primary:hover{box-shadow:0 4px 20px rgba(0,255,136,0.4);transform:translateY(-1px);}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:100px 5% 60px;position:relative;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(0,255,136,0.06) 0%,transparent 70%);}
+.bg-grid-s{position:absolute;inset:0;background-image:linear-gradient(rgba(0,255,136,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,0.04) 1px,transparent 1px);background-size:50px 50px;}
+.hero-content{position:relative;z-index:1;max-width:900px;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:20px;border:1px solid rgba(0,255,136,0.25);background:rgba(0,255,136,0.06);font-size:12px;letter-spacing:2px;color:var(--green);margin-bottom:28px;animation:fadeDown 0.8s ease-out;}
+.hero-badge::before{content:'●';font-size:8px;animation:blink 1.5s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+h1{font-family:'Orbitron',monospace;font-size:clamp(34px,7vw,78px);font-weight:900;line-height:1.1;margin-bottom:10px;animation:fadeUp 0.9s ease-out 0.2s both;}
+h1 span{background:linear-gradient(135deg,var(--green),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-sub{font-size:clamp(14px,2.5vw,19px);color:var(--muted);max-width:600px;margin:16px auto 40px;line-height:1.6;animation:fadeUp 0.9s ease-out 0.4s both;}
+.hero-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;animation:fadeUp 0.9s ease-out 0.6s both;}
+.hero-btn-main{padding:16px 36px;background:linear-gradient(135deg,var(--green),var(--blue));border-radius:8px;color:#050a0e;text-decoration:none;font-family:'Orbitron',monospace;font-size:13px;font-weight:700;letter-spacing:2px;box-shadow:0 0 40px rgba(0,255,136,0.3);transition:all 0.3s;}
+.hero-btn-main:hover{transform:translateY(-3px);box-shadow:0 8px 50px rgba(0,255,136,0.5);}
+.hero-btn-sec{padding:16px 36px;border:1px solid var(--border);border-radius:8px;color:var(--text);text-decoration:none;font-size:14px;letter-spacing:2px;transition:all 0.3s;}
+.hero-btn-sec:hover{border-color:var(--green);color:var(--green);background:rgba(0,255,136,0.04);}
+.hero-stats{display:flex;gap:50px;justify-content:center;flex-wrap:wrap;margin-top:70px;padding-top:50px;border-top:1px solid var(--border);animation:fadeUp 0.9s ease-out 0.8s both;}
+.stat-item{text-align:center;}
+.stat-num{font-family:'Orbitron',monospace;font-size:clamp(26px,4vw,40px);font-weight:900;background:linear-gradient(135deg,var(--green),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.stat-label{color:var(--muted);font-size:12px;letter-spacing:2px;margin-top:4px;}
+
+/* SECTIONS */
+section{padding:100px 5%;}
+.section-tag{font-size:11px;letter-spacing:4px;color:var(--green);margin-bottom:12px;text-transform:uppercase;}
+.section-title{font-family:'Orbitron',monospace;font-size:clamp(24px,4vw,42px);font-weight:900;color:#fff;margin-bottom:16px;line-height:1.2;}
+.section-sub{color:var(--muted);font-size:15px;max-width:600px;line-height:1.7;}
+.text-center{text-align:center;}
+.text-center .section-sub{margin:0 auto;}
+
+/* PLANS */
+#plans{background:var(--dark2);}
+.plan-tabs{display:flex;gap:4px;justify-content:center;margin:40px auto;background:rgba(0,255,136,0.05);border:1px solid var(--border);border-radius:10px;padding:4px;max-width:380px;}
+.plan-tab{flex:1;padding:10px;border-radius:7px;border:none;background:transparent;color:var(--muted);cursor:pointer;font-family:'Orbitron',monospace;font-size:11px;letter-spacing:1px;transition:all 0.3s;}
+.plan-tab.active{background:var(--green);color:#050a0e;font-weight:700;}
+.plans-grid{display:none;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px;}
+.plans-grid.active{display:grid;}
+.plan-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:28px 22px;position:relative;transition:all 0.3s;}
+.plan-card:hover{transform:translateY(-6px);border-color:rgba(0,255,136,0.3);box-shadow:0 20px 60px rgba(0,255,136,0.1);}
+.plan-card.popular{border-color:var(--green);box-shadow:0 0 40px rgba(0,255,136,0.12);}
+.popular-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(90deg,var(--green),var(--blue));color:#050a0e;padding:4px 16px;border-radius:20px;font-size:10px;font-weight:700;font-family:'Orbitron',monospace;letter-spacing:2px;white-space:nowrap;}
+.plan-icon{font-size:30px;margin-bottom:14px;}
+.plan-name{font-family:'Orbitron',monospace;font-size:14px;font-weight:700;color:#fff;margin-bottom:6px;letter-spacing:1px;}
+.plan-price{margin:14px 0;}
+.amount{font-family:'Orbitron',monospace;font-size:28px;font-weight:900;color:var(--green);}
+.period{color:var(--muted);font-size:13px;}
+.free-tag{font-family:'Orbitron',monospace;font-size:20px;font-weight:900;color:var(--gold);}
+.inv-tag{font-family:'Orbitron',monospace;font-size:13px;color:var(--blue);letter-spacing:1px;background:rgba(0,170,255,0.1);border:1px solid rgba(0,170,255,0.2);border-radius:5px;padding:3px 10px;display:inline-block;margin-bottom:8px;}
+.plan-desc{color:var(--muted);font-size:13px;margin-bottom:16px;line-height:1.5;}
+.plan-features{list-style:none;margin-bottom:20px;}
+.plan-features li{padding:5px 0;border-bottom:1px solid rgba(0,255,136,0.06);font-size:13px;color:var(--text);display:flex;align-items:center;gap:8px;}
+.plan-features li::before{content:'✓';color:var(--green);font-weight:700;font-size:11px;flex-shrink:0;}
+.plan-features li.no::before{content:'✗';color:var(--muted);}
+.plan-features li.no{color:var(--muted);}
+.plan-btn{display:block;text-align:center;padding:11px;border-radius:8px;text-decoration:none;font-family:'Orbitron',monospace;font-size:11px;font-weight:700;letter-spacing:1px;transition:all 0.3s;border:1px solid var(--border);color:var(--text);}
+.plan-btn:hover,.plan-card.popular .plan-btn{background:linear-gradient(135deg,var(--green),var(--green-dim));color:#050a0e;border-color:var(--green);}
+.vps-coming{background:var(--card);border:1px solid rgba(170,68,255,0.25);border-radius:14px;padding:60px 30px;text-align:center;}
+.vps-coming .vc-icon{font-size:56px;margin-bottom:16px;}
+.vps-coming h3{font-family:'Orbitron',monospace;font-size:22px;color:#fff;margin-bottom:12px;letter-spacing:2px;}
+.vps-coming p{color:var(--muted);font-size:15px;line-height:1.7;max-width:500px;margin:0 auto 24px;}
+.notify-btn{display:inline-flex;align-items:center;gap:10px;padding:14px 32px;background:linear-gradient(135deg,var(--purple),#7722cc);border-radius:8px;color:#fff;text-decoration:none;font-family:'Orbitron',monospace;font-size:12px;font-weight:700;letter-spacing:2px;transition:all 0.3s;box-shadow:0 0 30px rgba(170,68,255,0.3);}
+.notify-btn:hover{transform:translateY(-2px);box-shadow:0 8px 40px rgba(170,68,255,0.5);}
+
+/* WHY US */
+#why{background:var(--dark);}
+.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:22px;margin-top:60px;}
+.why-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:30px;transition:all 0.4s;position:relative;overflow:hidden;}
+.why-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--green),transparent);opacity:0;transition:opacity 0.3s;}
+.why-card:hover::before{opacity:1;}
+.why-card:hover{transform:translateY(-4px);border-color:rgba(0,255,136,0.25);}
+.why-icon{font-size:34px;margin-bottom:14px;display:block;}
+.why-title{font-family:'Orbitron',monospace;font-size:14px;font-weight:700;color:#fff;margin-bottom:10px;letter-spacing:1px;}
+.why-desc{color:var(--muted);font-size:13px;line-height:1.7;}
+.why-metric{font-family:'Orbitron',monospace;font-size:24px;font-weight:900;color:var(--green);margin-top:12px;}
+
+/* REVIEWS */
+#reviews{background:var(--dark2);}
+.reviews-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:18px;margin-top:50px;}
+.review-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;}
+.stars{color:var(--gold);font-size:15px;margin-bottom:12px;letter-spacing:2px;}
+.review-text{color:var(--text);font-size:13px;line-height:1.7;margin-bottom:16px;font-style:italic;}
+.review-author{display:flex;align-items:center;gap:12px;}
+.review-avatar{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,var(--green),var(--blue));display:flex;align-items:center;justify-content:center;font-size:16px;}
+.review-name{font-weight:600;color:#fff;font-size:14px;}
+.review-role{color:var(--muted);font-size:11px;letter-spacing:1px;}
+
+/* CONTACT */
+#contact{background:var(--dark);text-align:center;}
+.contact-box{max-width:580px;margin:50px auto 0;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:48px 36px;position:relative;overflow:hidden;}
+.contact-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--green),var(--blue));}
+.discord-btn{display:inline-flex;align-items:center;gap:12px;padding:17px 38px;margin-top:26px;background:#5865F2;border-radius:10px;color:#fff;text-decoration:none;font-family:'Orbitron',monospace;font-size:13px;font-weight:700;letter-spacing:2px;transition:all 0.3s;box-shadow:0 0 30px rgba(88,101,242,0.3);}
+.discord-btn:hover{background:#4752c4;transform:translateY(-3px);box-shadow:0 8px 40px rgba(88,101,242,0.5);}
+
+/* FOOTER */
+footer{background:var(--dark2);border-top:1px solid var(--border);padding:50px 5% 28px;}
+.footer-grid{display:grid;grid-template-columns:2fr repeat(3,1fr);gap:40px;margin-bottom:36px;}
+.footer-brand p{color:var(--muted);font-size:13px;margin-top:10px;line-height:1.7;max-width:270px;}
+.footer-col h4{font-family:'Orbitron',monospace;font-size:11px;letter-spacing:2px;color:var(--green);margin-bottom:14px;}
+.footer-col a{display:block;color:var(--muted);text-decoration:none;font-size:13px;margin-bottom:8px;transition:color 0.3s;}
+.footer-col a:hover{color:var(--text);}
+.footer-bottom{border-top:1px solid var(--border);padding-top:22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+.footer-copy{color:var(--muted);font-size:12px;letter-spacing:1px;}
+.footer-status{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--green);letter-spacing:1px;}
+.status-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:blink 2s infinite;}
+
+@media(max-width:768px){.nav-links,.nav-cta{display:none;}.footer-grid{grid-template-columns:1fr 1fr;}.hero-stats{gap:28px;}}
+@media(max-width:480px){.footer-grid{grid-template-columns:1fr;}section{padding:60px 5%;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-icon">⛏</div>
+    <span class="nav-logo-text">MINEVANTA</span>
+  </a>
+  <div class="nav-links">
+    <a href="#plans">Plans</a>
+    <a href="#why">Why Us</a>
+    <a href="#reviews">Reviews</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <div class="nav-cta">
+    <a href="login.html" class="btn-ghost">Login</a>
+    <a href="signup.html" class="btn-primary">Get Started</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="bg-grid-s"></div>
+  <div class="hero-content">
+    <div class="hero-badge">🟢 SERVERS ONLINE — 99.9% UPTIME</div>
+    <h1>THE FUTURE OF<br/><span>MINECRAFT HOSTING</span></h1>
+    <p class="hero-sub">Ultra-low latency. Instant deployment. NVMe SSDs. DDoS protection on every server. Join 50,000+ server owners who trust MineVanta.</p>
+    <div class="hero-btns">
+      <a href="#plans" class="hero-btn-main">VIEW PLANS ↓</a>
+      <a href="signup.html" class="hero-btn-sec">FREE SERVER →</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item"><div class="stat-num">50K+</div><div class="stat-label">ACTIVE SERVERS</div></div>
+      <div class="stat-item"><div class="stat-num">99.9%</div><div class="stat-label">UPTIME SLA</div></div>
+      <div class="stat-item"><div class="stat-num">&lt;5ms</div><div class="stat-label">AVERAGE PING</div></div>
+      <div class="stat-item"><div class="stat-num">24/7</div><div class="stat-label">SUPPORT</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PLANS -->
+<section id="plans">
+  <div class="text-center">
+    <div class="section-tag">⚡ PRICING PLANS</div>
+    <h2 class="section-title">CHOOSE YOUR SERVER</h2>
+    <p class="section-sub">From free community servers to high-performance paid plans — every tier is built to perform.</p>
+  </div>
+  <div class="plan-tabs">
+    <button class="plan-tab active" onclick="showPlans('free',this)">FREE</button>
+    <button class="plan-tab" onclick="showPlans('paid',this)">PAID</button>
+    <button class="plan-tab" onclick="showPlans('vps',this)">VPS</button>
+  </div>
+
+  <!-- FREE PLANS -->
+  <div class="plans-grid active" id="plans-free">
+
+    <div class="plan-card">
+      <div class="plan-icon">🌱</div>
+      <div class="inv-tag">1 INV</div>
+      <div class="plan-name">STARTER</div>
+      <div class="plan-price"><span class="free-tag">FREE</span></div>
+      <div class="plan-desc">Perfect for testing or a small group of friends.</div>
+      <ul class="plan-features">
+        <li>1 GB RAM</li>
+        <li>25% CPU</li>
+        <li>5 GB Disk</li>
+        <li>Pterodactyl Panel</li>
+        <li class="no">Custom Domain</li>
+        <li class="no">DDoS Protection</li>
+        <li class="no">Priority Support</li>
+      </ul>
+      <a href="signup.html" class="plan-btn">GET STARTED</a>
+    </div>
+
+    <div class="plan-card">
+      <div class="plan-icon">🌿</div>
+      <div class="inv-tag">3 INV</div>
+      <div class="plan-name">BASIC</div>
+      <div class="plan-price"><span class="free-tag">FREE</span></div>
+      <div class="plan-desc">A solid free server for a growing community.</div>
+      <ul class="plan-features">
+        <li>2 GB RAM</li>
+        <li>50% CPU</li>
+        <li>10 GB Disk</li>
+        <li>Pterodactyl Panel</li>
+        <li>Basic DDoS Shield</li>
+        <li class="no">Custom Domain</li>
+        <li class="no">Priority Support</li>
+      </ul>
+      <a href="signup.html" class="plan-btn">GET STARTED</a>
+    </div>
+
+    <div class="plan-card popular">
+      <div class="popular-badge">MOST POPULAR</div>
+      <div class="plan-icon">🌳</div>
+      <div class="inv-tag">5 INV</div>
+      <div class="plan-name">PRO FREE</div>
+      <div class="plan-price"><span class="free-tag">FREE</span></div>
+      <div class="plan-desc">Great for modded servers and active communities.</div>
+      <ul class="plan-features">
+        <li>4 GB RAM</li>
+        <li>100% CPU</li>
+        <li>25 GB Disk</li>
+        <li>Pterodactyl Panel</li>
+        <li>Standard DDoS Shield</li>
+        <li>Subdomain Included</li>
+        <li class="no">Priority Support</li>
+      </ul>
+      <a href="signup.html" class="plan-btn">GET STARTED</a>
+    </div>
+
+    <div class="plan-card">
+      <div class="plan-icon">🏆</div>
+      <div class="inv-tag">8 INV</div>
+      <div class="plan-name">ELITE FREE</div>
+      <div class="plan-price"><span class="free-tag">FREE</span></div>
+      <div class="plan-desc">Top-tier free hosting. More power than most paid alternatives.</div>
+      <ul class="plan-features">
+        <li>8 GB RAM</li>
+        <li>250% CPU</li>
+        <li>30 GB Disk</li>
+        <li>Pterodactyl Panel</li>
+        <li>Advanced DDoS Shield</li>
+        <li>Custom Subdomain</li>
+        <li class="no">Priority Support</li>
+      </ul>
+      <a href="signup.html" class="plan-btn">GET STARTED</a>
+    </div>
+
+    <div class="plan-card">
+      <div class="plan-icon">👑</div>
+      <div class="inv-tag">12 INV</div>
+      <div class="plan-name">ULTRA FREE</div>
+      <div class="plan-price"><span class="free-tag">FREE</span></div>
+      <div class="plan-desc">Maximum free-tier power for large networks and heavy modpacks.</div>
+      <ul class="plan-features">
+        <li>12 GB RAM</li>
+        <li>300% CPU</li>
+        <li>40 GB Disk</li>
+        <li>Pterodactyl Panel</li>
+        <li>Enterprise DDoS Shield</li>
+        <li>Custom Subdomain</li>
+        <li>Community Support</li>
+      </ul>
+      <a href="signup.html" class="plan-btn">GET STARTED</a>
+    </div>
+
+  </div>
+
+  <!-- PAID PLANS -->
+  <div class="plans-grid" id="plans-paid">
+
+    <div class="plan-card">
+      <div class="plan-icon">⚡</div>
+      <div class="plan-name">STARTER PAID</div>
+      <div class="plan-price"><span class="amount">₹500</span><span class="period">/month</span></div>
+      <div class="plan-desc">Reliable paid hosting with guaranteed resources and full support.</div>
+      <ul class="plan-features">
+        <li>6 GB RAM</li>
+        <li>150% CPU</li>
+        <li>20 GB Disk</li>
+        <li>Pterodactyl Panel</li>
+        <li>DDoS Protection</li>
+        <li>Custom Domain Support</li>
+        <li>Priority Support</li>
+      </ul>
+      <a href="signup.html" class="plan-btn">GET STARTED</a>
+    </div>
+
+    <div class="plan-card popular">
+      <div class="popular-badge">BEST VALUE</div>
+      <div class="plan-icon">🚀</div>
+      <div class="plan-name">PREMIUM PAID</div>
+      <div class="plan-price"><span class="amount">₹1,000</span><span class="period">/month</span></div>
+      <div class="plan-desc">The sweet spot for serious server owners. More power, more players.</div>
+      <ul class="plan-features">
+        <li>10 GB RAM</li>
+        <li>260% CPU</li>
+        <li>40 GB Disk</li>
+        <li>Pterodactyl Panel</li>
+        <li>Advanced DDoS Protection</li>
+        <li>Custom Domain + SSL</li>
+        <li>Priority Support</li>
+      </ul>
+      <a href="signup.html" class="plan-btn">GET STARTED</a>
+    </div>
+
+    <div class="plan-card">
+      <div class="plan-icon">💎</div>
+      <div class="plan-name">ULTRA PAID</div>
+      <div class="plan-price"><span class="amount">₹1,500</span><span class="period">/month</span></div>
+      <div class="plan-desc">Maximum performance for large public networks and heavy modpacks.</div>
+      <ul class="plan-features">
+        <li>18 GB RAM</li>
+        <li>400% CPU</li>
+        <li>50 GB Disk</li>
+        <li>Pterodactyl Panel</li>
+        <li>Enterprise DDoS Protection</li>
+        <li>Custom Domain + SSL</li>
+        <li>24/7 Priority Support</li>
+      </ul>
+      <a href="signup.html" class="plan-btn">GET STARTED</a>
+    </div>
+
+  </div>
+
+  <!-- VPS — COMING SOON -->
+  <div class="plans-grid" id="plans-vps">
+    <div class="vps-coming">
+      <div class="vc-icon">🔧</div>
+      <h3>VPS PLANS — COMING SOON</h3>
+      <p>We're finalising our VPS infrastructure to bring you enterprise-grade virtual private servers at unbeatable prices. Full root access, NVMe SSDs, and global regions. Join our Discord to get notified the moment they launch.</p>
+      <a href="https://discord.gg/minevanta" target="_blank" class="notify-btn">🔔 NOTIFY ME ON DISCORD</a>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section id="why">
+  <div class="text-center">
+    <div class="section-tag">🏆 WHY MINEVANTA</div>
+    <h2 class="section-title">BUILT FOR PERFORMANCE</h2>
+    <p class="section-sub">We obsess over every millisecond, every byte, every uptime second — so your players never experience lag.</p>
+  </div>
+  <div class="why-grid">
+    <div class="why-card"><span class="why-icon">⚡</span><div class="why-title">ULTRA LOW LATENCY</div><div class="why-desc">AMD EPYC processors with NVMe SSDs deliver lightning-fast response times. Your players get the smoothest experience possible.</div><div class="why-metric">&lt;5ms</div></div>
+    <div class="why-card"><span class="why-icon">🛡</span><div class="why-title">ENTERPRISE DDoS PROTECTION</div><div class="why-desc">Up to 1Tbps DDoS mitigation on all plans. Always-on protection filters malicious traffic before it reaches your server.</div><div class="why-metric">1 Tbps</div></div>
+    <div class="why-card"><span class="why-icon">🌍</span><div class="why-title">GLOBAL NODE NETWORK</div><div class="why-desc">Servers across North America, Europe, Asia, and Australia. Deploy closest to your players for minimum latency.</div><div class="why-metric">12+ DCs</div></div>
+    <div class="why-card"><span class="why-icon">📊</span><div class="why-title">99.9% UPTIME SLA</div><div class="why-desc">Redundant power, cooling, and network links ensure your server stays online around the clock with a real guarantee.</div><div class="why-metric">99.9%</div></div>
+    <div class="why-card"><span class="why-icon">🎛</span><div class="why-title">PTERODACTYL PANEL</div><div class="why-desc">Manage everything through the industry-leading Pterodactyl panel. One-click installs for all Minecraft versions, mods, and plugins.</div><div class="why-metric">1-CLICK</div></div>
+    <div class="why-card"><span class="why-icon">💬</span><div class="why-title">24/7 HUMAN SUPPORT</div><div class="why-desc">Real humans, not bots. Our support team is available round the clock via Discord and ticket system. Average response &lt;10 minutes.</div><div class="why-metric">&lt;10min</div></div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <div class="text-center">
+    <div class="section-tag">⭐ TESTIMONIALS</div>
+    <h2 class="section-title">LOVED BY THOUSANDS</h2>
+    <p class="section-sub">Hear from our community of 50,000+ server owners worldwide.</p>
+  </div>
+  <div class="reviews-grid">
+    <div class="review-card"><div class="stars">★★★★★</div><p class="review-text">"Switched from a competitor and the difference is insane. Zero lag, fast setup, and the panel is super clean. MineVanta is the real deal."</p><div class="review-author"><div class="review-avatar">🎮</div><div><div class="review-name">xCraft_Steve</div><div class="review-role">NETWORK OWNER • 500 PLAYERS</div></div></div></div>
+    <div class="review-card"><div class="stars">★★★★★</div><p class="review-text">"Been using their free tier for 3 months. It's legitimately better than paid hosting I've tried elsewhere. No complaints at all."</p><div class="review-author"><div class="review-avatar">⚒</div><div><div class="review-name">BuilderKing99</div><div class="review-role">FREE PLAN USER • SMP SERVER</div></div></div></div>
+    <div class="review-card"><div class="stars">★★★★★</div><p class="review-text">"The DDoS protection saved us during a raid. Server stayed up the whole time. Support responded in 5 minutes. Absolutely stellar."</p><div class="review-author"><div class="review-avatar">🏰</div><div><div class="review-name">Notchcraft</div><div class="review-role">PREMIUM PLAN • 200+ PLAYERS</div></div></div></div>
+    <div class="review-card"><div class="stars">★★★★★</div><p class="review-text">"At ₹500/month you genuinely cannot beat this. 6GB RAM runs our modpack perfectly and the support team is always there when needed."</p><div class="review-author"><div class="review-avatar">🔧</div><div><div class="review-name">MineOps_IN</div><div class="review-role">PAID STARTER • MODDED SERVER</div></div></div></div>
+    <div class="review-card"><div class="stars">★★★★★</div><p class="review-text">"Setup took 30 seconds. Pterodactyl panel is buttery smooth. My players noticed the improvement immediately after migrating."</p><div class="review-author"><div class="review-avatar">🌙</div><div><div class="review-name">MoonBlock</div><div class="review-role">PAID ULTRA • LARGE NETWORK</div></div></div></div>
+    <div class="review-card"><div class="stars">★★★★★</div><p class="review-text">"Started on the 5 INV free plan. Loved it so much I upgraded to paid. The resource jump is massive. Couldn't be happier."</p><div class="review-author"><div class="review-avatar">🦅</div><div><div class="review-name">Eaglemine_IN</div><div class="review-role">PAID PREMIUM • SURVIVAL SERVER</div></div></div></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-tag text-center">💬 GET IN TOUCH</div>
+  <h2 class="section-title text-center">JOIN OUR COMMUNITY</h2>
+  <div class="contact-box">
+    <p style="font-size:40px;margin-bottom:12px">🎮</p>
+    <h3 style="font-family:'Orbitron',monospace;font-size:19px;color:#fff;letter-spacing:2px;margin-bottom:10px">WE'RE ON DISCORD</h3>
+    <p style="color:var(--muted);font-size:14px;line-height:1.7;max-width:380px;margin:0 auto">Get support, report issues, suggest features, and hang out with the MineVanta community. Our team is active 24/7.</p>
+    <a href="https://discord.gg/minevanta" target="_blank" class="discord-btn">🔊 JOIN DISCORD SERVER</a>
+    <p style="color:var(--muted);font-size:11px;letter-spacing:2px;margin-top:16px">discord.gg/minevanta</p>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+        <div style="width:30px;height:30px;background:linear-gradient(135deg,var(--green),var(--blue));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:15px">⛏</div>
+        <span style="font-family:'Orbitron',monospace;font-size:14px;font-weight:900;background:linear-gradient(90deg,var(--green),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:2px">MINEVANTA</span>
+      </div>
+      <p>High performance Minecraft hosting trusted by 50,000+ server owners worldwide. Ultra-low latency, DDoS protection, instant setup.</p>
+    </div>
+    <div class="footer-col"><h4>HOSTING</h4><a href="#plans">Free Servers</a><a href="#plans">Paid Servers</a><a href="#plans">VPS (Coming Soon)</a><a href="signup.html">Get Started</a></div>
+    <div class="footer-col"><h4>COMPANY</h4><a href="#">About Us</a><a href="#">Blog</a><a href="#">Status Page</a><a href="#">Affiliates</a></div>
+    <div class="footer-col"><h4>SUPPORT</h4><a href="https://discord.gg/minevanta" target="_blank">Discord</a><a href="login.html">Submit Ticket</a><a href="contact.html">FAQ</a><a href="#">Terms of Service</a></div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 MineVanta Hosting™ — All rights reserved.</div>
+    <div class="footer-status"><div class="status-dot"></div> ALL SYSTEMS OPERATIONAL</div>
+  </div>
+</footer>
+
+<script>
+function showPlans(type, btn) {
+  document.querySelectorAll('.plans-grid').forEach(g=>g.classList.remove('active'));
+  document.querySelectorAll('.plan-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('plans-'+type).classList.add('active');
+  btn.classList.add('active');
+}
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';}});
+},{threshold:0.1});
+document.querySelectorAll('.why-card,.plan-card,.review-card').forEach(el=>{
+  el.style.opacity='0';el.style.transform='translateY(28px)';el.style.transition='opacity 0.6s ease,transform 0.6s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
