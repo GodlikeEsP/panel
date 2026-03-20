@@ -306,9 +306,9 @@ function createAdminUser(username, email, password) {
 
   const newAdmin = {
     id:       _id(),
-    username, 'ownerneev'
-    email,    'owner@minevanta.com
-    password, 'minevantaowner'
+    username,
+    email,
+    password,
     role:     'admin',   // ← explicitly set
     plan:     null,
     serverId: null,
