@@ -1,5 +1,5 @@
 // ══════════════════════════════════════════════
-//  MineVanta — Core Data Engine v2
+//  MineVanta — Core Data Engine v3
 // ══════════════════════════════════════════════
 
 const KEYS = {
@@ -21,30 +21,18 @@ function initData() {
   let users = _get(KEYS.users) || [];
 
   // Always ensure master admin exists
-  if (!users.find(u => u.email === 'adminxypher@minevanta.com')) {
+  const masterExists = users.find(u => u.email === 'adminxypher@minevanta.com');
+  if (!masterExists) {
     users.unshift({
-      id: 'admin_root',
+      id:       'admin_root',
       username: 'adminxypher',
-      email: 'adminxypher@minevanta.com',
+      email:    'adminxypher@minevanta.com',
       password: 'admin2026',
-      role: 'admin',
-      plan: null,
+      role:     'admin',
+      plan:     null,
       serverId: null,
-      created: _date()
+      created:  _date()
     });
-    // Ensure second admin exists
- if (!users.find(u => u.email === 'admin2@minevanta.com')) {
-  users.unshift({
-    id: 'admin_2',
-    username: 'admin2',
-    email: 'admin2@minevanta.com',
-    password: 'admin123',
-    role: 'admin',
-    plan: null,
-    serverId: null,
-    created: _date()
-  });
-}
     _set(KEYS.users, users);
   }
 
@@ -56,18 +44,21 @@ function initData() {
 // ══════════════════════════════════════════════
 //  AUTH
 // ══════════════════════════════════════════════
-function getUsers()    { return _get(KEYS.users) || []; }
-function saveUsers(u)  { _set(KEYS.users, u); }
-function getSession()  { return _get(KEYS.session); }
+function getUsers()   { return _get(KEYS.users) || []; }
+function saveUsers(u) { _set(KEYS.users, u); }
+function getSession() { return _get(KEYS.session); }
 
 function setSession(user) {
+  // Always read role directly from the users store, not from a stale object
+  const freshUsers = getUsers();
+  const fresh = freshUsers.find(u => u.id === user.id) || user;
   _set(KEYS.session, {
-    id:       user.id,
-    username: user.username,
-    email:    user.email,
-    role:     user.role || 'user',
-    plan:     user.plan || null,
-    serverId: user.serverId || null
+    id:       fresh.id,
+    username: fresh.username,
+    email:    fresh.email,
+    role:     fresh.role || 'user',   // ← always from fresh record
+    plan:     fresh.plan || null,
+    serverId: fresh.serverId || null
   });
 }
 
@@ -79,8 +70,11 @@ function refreshSession() {
 }
 
 function isAdmin() {
+  // Double-check: read role from users store, not just session
   const s = getSession();
-  return !!(s && s.role === 'admin');
+  if (!s) return false;
+  const user = getUsers().find(u => u.id === s.id);
+  return !!(user && user.role === 'admin');
 }
 
 function requireAuth() {
@@ -92,7 +86,8 @@ function requireAuth() {
 function requireAdmin() {
   const s = getSession();
   if (!s) { window.location.replace('login.html'); return null; }
-  if (s.role !== 'admin') { window.location.replace('home.html'); return null; }
+  const user = getUsers().find(u => u.id === s.id);
+  if (!user || user.role !== 'admin') { window.location.replace('home.html'); return null; }
   return s;
 }
 
@@ -103,11 +98,12 @@ function doLogout() {
 
 function login(email, password) {
   initData();
-  const user = getUsers().find(u =>
+  const users = getUsers();
+  const user = users.find(u =>
     u.email.toLowerCase() === email.toLowerCase() && u.password === password
   );
   if (!user) return { success: false, message: 'Invalid email or password.' };
-  setSession(user);
+  setSession(user);  // setSession now reads fresh role from store
   return { success: true, role: user.role };
 }
 
@@ -137,7 +133,9 @@ function getAnnouncements() { return _get(KEYS.announcements) || []; }
 
 function addAnnouncement(title, body) {
   const s = getSession();
-  if (!s || s.role !== 'admin') return false;
+  if (!s) return false;
+  const user = getUsers().find(u => u.id === s.id);
+  if (!user || user.role !== 'admin') return false;
   const list = getAnnouncements();
   list.unshift({ id: _id(), title, body, date: _now(), author: s.username });
   _set(KEYS.announcements, list);
@@ -151,48 +149,45 @@ function deleteAnnouncement(id) {
 }
 
 // ══════════════════════════════════════════════
-//  TICKETS  —  raw store, NO session filtering
+//  TICKETS — raw store, NO session filtering
 // ══════════════════════════════════════════════
 
-/** Returns ALL tickets straight from localStorage — never filtered */
+/** Always read raw from localStorage — never filtered by session */
 function getAllTickets() {
-  return _get(KEYS.tickets) || [];
+  try { return JSON.parse(localStorage.getItem(KEYS.tickets) || '[]'); } catch(e) { return []; }
+}
+function saveAllTickets(tickets) {
+  localStorage.setItem(KEYS.tickets, JSON.stringify(tickets));
 }
 
-/** Returns tickets belonging to a specific userId */
-function getTicketsForUser(userId) {
-  return getAllTickets().filter(t => t.userId === userId);
-}
-
-/** Legacy alias — used by user dashboard */
-function getMyTickets() {
+// Aliases for compatibility
+function getTickets()    { return getAllTickets(); }
+function getMyTickets()  {
   const s = getSession();
   if (!s) return [];
-  if (s.role === 'admin') return getAllTickets();   // admins see everything
-  return getTicketsForUser(s.id);
+  const user = getUsers().find(u => u.id === s.id);
+  if (user && user.role === 'admin') return getAllTickets();
+  return getAllTickets().filter(t => t.userId === s.id);
 }
-
-// Keep getTickets() as alias so old calls don't break
-function getTickets() { return getAllTickets(); }
 
 function createTicket(subject, message, type) {
   const s = getSession();
   if (!s) return null;
   const ticket = {
-    id: _id(),
+    id:       _id(),
     subject,
-    type: type || 'general',
-    status: 'open',
-    userId: s.id,
+    type:     type || 'general',
+    status:   'open',
+    userId:   s.id,
     username: s.username,
-    created: _now(),
+    created:  _now(),
     messages: [
-      { id: _id(), author: s.username, role: s.role || 'user', text: message, time: _now() }
+      { id: _id(), author: s.username, role: 'user', text: message, time: _now() }
     ]
   };
   const tickets = getAllTickets();
   tickets.unshift(ticket);
-  _set(KEYS.tickets, tickets);
+  saveAllTickets(tickets);
   return ticket;
 }
 
@@ -202,10 +197,12 @@ function replyTicket(ticketId, text) {
   const tickets = getAllTickets();
   const t = tickets.find(t => t.id === ticketId);
   if (!t) return false;
-  if (s.role !== 'admin' && t.userId !== s.id) return false;
-  t.messages.push({ id: _id(), author: s.username, role: s.role || 'user', text, time: _now() });
-  t.status = s.role === 'admin' ? 'answered' : 'open';
-  _set(KEYS.tickets, tickets);
+  const user = getUsers().find(u => u.id === s.id);
+  const role = (user && user.role) || 'user';
+  if (role !== 'admin' && t.userId !== s.id) return false;
+  t.messages.push({ id: _id(), author: s.username, role, text, time: _now() });
+  t.status = role === 'admin' ? 'answered' : 'open';
+  saveAllTickets(tickets);
   return true;
 }
 
@@ -213,7 +210,7 @@ function closeTicket(ticketId) {
   if (!isAdmin()) return false;
   const tickets = getAllTickets();
   const t = tickets.find(t => t.id === ticketId);
-  if (t) { t.status = 'closed'; _set(KEYS.tickets, tickets); }
+  if (t) { t.status = 'closed'; saveAllTickets(tickets); }
   return true;
 }
 
@@ -232,13 +229,14 @@ function assignServer(userId, serverData) {
   const user = users.find(u => u.id === userId);
   if (!user) return false;
   const server = {
-    id: _id(), userId,
+    id:       _id(),
+    userId,
     username: user.username,
     name:     serverData.name,
     type:     serverData.type   || 'VANILLA',
     region:   serverData.region || 'US-EAST',
     plan:     serverData.plan,
-    ram:      serverData.ram,
+    ram:      serverData.ram    || '—',
     cpu:      serverData.cpu    || '—',
     disk:     serverData.disk   || '—',
     slots:    serverData.slots  || '—',
@@ -281,20 +279,49 @@ function demoteUser(userId) {
   const users = getUsers();
   const user = users.find(u => u.id === userId);
   if (user && user.email !== 'adminxypher@minevanta.com') {
-    user.role = 'user'; saveUsers(users);
+    user.role = 'user';
+    saveUsers(users);
   }
   return true;
 }
 
 function createAdminUser(username, email, password) {
-  if (!isAdmin()) return { success: false, message: 'Unauthorized.' };
+  // Check caller is admin by reading from users store directly
+  const s = getSession();
+  if (!s) return { success: false, message: 'Not logged in.' };
+  const callerInStore = getUsers().find(u => u.id === s.id);
+  if (!callerInStore || callerInStore.role !== 'admin')
+    return { success: false, message: 'Unauthorized.' };
+
+  if (!username || !email || !password)
+    return { success: false, message: 'All fields are required.' };
+  if (password.length < 6)
+    return { success: false, message: 'Password must be at least 6 characters.' };
+
   const users = getUsers();
   if (users.find(u => u.email.toLowerCase() === email.toLowerCase()))
     return { success: false, message: 'Email already exists.' };
   if (users.find(u => u.username.toLowerCase() === username.toLowerCase()))
     return { success: false, message: 'Username already taken.' };
-  users.push({ id: _id(), username, email, password, role: 'admin', plan: null, serverId: null, created: _date() });
+
+  const newAdmin = {
+    id:       _id(),
+    username, 'ownerneev'
+    email,    'owner@minevanta.com
+    password, 'minevantaowner'
+    role:     'admin',   // ← explicitly set
+    plan:     null,
+    serverId: null,
+    created:  _date()
+  };
+  users.push(newAdmin);
   saveUsers(users);
+
+  // Verify it was saved correctly
+  const saved = getUsers().find(u => u.email === email);
+  if (!saved || saved.role !== 'admin')
+    return { success: false, message: 'Save failed — please try again.' };
+
   return { success: true };
 }
 
