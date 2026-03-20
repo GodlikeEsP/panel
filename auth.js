@@ -32,6 +32,19 @@ function initData() {
       serverId: null,
       created: _date()
     });
+    // Ensure second admin exists
+ if (!users.find(u => u.email === 'admin2@minevanta.com')) {
+  users.unshift({
+    id: 'admin_2',
+    username: 'admin2',
+    email: 'admin2@minevanta.com',
+    password: 'admin123',
+    role: 'admin',
+    plan: null,
+    serverId: null,
+    created: _date()
+  });
+}
     _set(KEYS.users, users);
   }
 
